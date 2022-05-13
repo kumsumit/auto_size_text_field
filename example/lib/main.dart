@@ -19,22 +19,21 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, @required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-
-
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController _textEditingControllerOne;
-  TextEditingController _textEditingControllerTwo;
-  TextEditingController _textEditingControllerThree;
-  TextEditingController _textEditingControllerFour;
-  TextEditingController _textEditingControllerFive;
+  late TextEditingController _textEditingControllerOne;
+  late TextEditingController _textEditingControllerTwo;
+  late TextEditingController _textEditingControllerThree;
+  late TextEditingController _textEditingControllerFour;
+  late TextEditingController _textEditingControllerFive;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(height: 48),
-
               Text('Auto adjusted width with prefix and suffix text'),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -131,15 +129,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         isDense: true,
-                        contentPadding: const EdgeInsets.all(20)
-                    ),
+                        contentPadding: const EdgeInsets.all(20)),
                     keyboardType: TextInputType.multiline,
                   ),
                 ),
               ),
               TextButton(
                   onPressed: () {
-                    _textEditingControllerFive?.clear();
+                    _textEditingControllerFive.clear();
                   },
                   child: Text('clear'))
             ],
@@ -161,11 +158,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
-    _textEditingControllerOne?.dispose();
-    _textEditingControllerTwo?.dispose();
-    _textEditingControllerThree?.dispose();
-    _textEditingControllerFour?.dispose();
-    _textEditingControllerFive?.dispose();
+    _textEditingControllerOne.dispose();
+    _textEditingControllerTwo.dispose();
+    _textEditingControllerThree.dispose();
+    _textEditingControllerFour.dispose();
+    _textEditingControllerFive.dispose();
     super.dispose();
   }
 }

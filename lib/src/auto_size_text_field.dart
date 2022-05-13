@@ -355,8 +355,6 @@ class AutoSizeTextField extends StatefulWidget {
   ///
   /// This setting is only honored on iOS devices.
   ///
-  /// If unset, defaults to the brightness of [ThemeData.primaryColorBrightness].
-  final Brightness? keyboardAppearance;
 
   /// {@macro flutter.widgets.editableText.scrollPadding}
   final EdgeInsets scrollPadding;
@@ -430,66 +428,68 @@ class AutoSizeTextField extends StatefulWidget {
 
   final double? minWidth;
 
+  final FormFieldValidator<String>? validator;
+
   /// Creates a [AutoSizeTextField] widget.
   ///
   /// If the [style] argument is null, the text will use the style from the
   /// closest enclosing [DefaultTextStyle].
-  const AutoSizeTextField({
-    Key? key,
-    this.fullWidth = true,
-    this.textFieldKey,
-    this.style,
-    this.strutStyle,
-    this.minFontSize = 12,
-    this.maxFontSize = double.infinity,
-    this.stepGranularity = 1,
-    this.presetFontSizes,
-    this.textAlign = TextAlign.start,
-    this.textDirection,
-    this.locale,
-    this.wrapWords = true,
-    this.overflowReplacement,
-    this.semanticsLabel,
-    this.controller,
-    this.focusNode,
-    this.decoration = const InputDecoration(),
-    TextInputType? keyboardType,
-    this.textInputAction,
-    this.textCapitalization = TextCapitalization.none,
-    this.textAlignVertical,
-    this.autofocus = false,
-    this.obscureText = false,
-    this.autocorrect = true,
-    SmartDashesType? smartDashesType,
-    SmartQuotesType? smartQuotesType,
-    this.enableSuggestions = true,
-    this.maxLines = 1,
-    this.expands = false,
-    this.readOnly = false,
-    ToolbarOptions? toolbarOptions,
-    this.showCursor,
-    this.maxLength,
-    this.maxLengthEnforced = MaxLengthEnforcement.enforced,
-    this.onChanged,
-    this.onEditingComplete,
-    this.onSubmitted,
-    this.inputFormatters,
-    this.enabled,
-    this.cursorWidth = 2.0,
-    this.cursorRadius,
-    this.cursorColor,
-    this.selectionHeightStyle = ui.BoxHeightStyle.tight,
-    this.selectionWidthStyle = ui.BoxWidthStyle.tight,
-    this.keyboardAppearance,
-    this.scrollPadding = const EdgeInsets.all(20.0),
-    this.enableInteractiveSelection = true,
-    this.onTap,
-    this.buildCounter,
-    this.scrollPhysics,
-    this.scrollController,
-    this.minLines,
-    this.minWidth,
-  })  : textSpan = null,
+  const AutoSizeTextField(
+      {Key? key,
+      this.fullWidth = true,
+      this.textFieldKey,
+      this.style,
+      this.strutStyle,
+      this.minFontSize = 12,
+      this.maxFontSize = double.infinity,
+      this.stepGranularity = 1,
+      this.presetFontSizes,
+      this.textAlign = TextAlign.start,
+      this.textDirection,
+      this.locale,
+      this.wrapWords = true,
+      this.overflowReplacement,
+      this.semanticsLabel,
+      this.controller,
+      this.focusNode,
+      this.decoration = const InputDecoration(),
+      TextInputType? keyboardType,
+      this.textInputAction,
+      this.textCapitalization = TextCapitalization.none,
+      this.textAlignVertical,
+      this.autofocus = false,
+      this.obscureText = false,
+      this.autocorrect = true,
+      SmartDashesType? smartDashesType,
+      SmartQuotesType? smartQuotesType,
+      this.enableSuggestions = true,
+      this.maxLines = 1,
+      this.expands = false,
+      this.readOnly = false,
+      ToolbarOptions? toolbarOptions,
+      this.showCursor,
+      this.maxLength,
+      this.maxLengthEnforced = MaxLengthEnforcement.enforced,
+      this.onChanged,
+      this.onEditingComplete,
+      this.onSubmitted,
+      this.inputFormatters,
+      this.enabled,
+      this.cursorWidth = 2.0,
+      this.cursorRadius,
+      this.cursorColor,
+      this.selectionHeightStyle = ui.BoxHeightStyle.tight,
+      this.selectionWidthStyle = ui.BoxWidthStyle.tight,
+      this.scrollPadding = const EdgeInsets.all(20.0),
+      this.enableInteractiveSelection = true,
+      this.onTap,
+      this.buildCounter,
+      this.scrollPhysics,
+      this.scrollController,
+      this.minLines,
+      this.minWidth,
+      this.validator})
+      : textSpan = null,
         smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -577,7 +577,8 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
     return Container(
       width: widget.fullWidth
           ? double.infinity
-          : math.max(fontSize, _textSpanWidth * MediaQuery.of(context).textScaleFactor),
+          : math.max(fontSize,
+              _textSpanWidth * MediaQuery.of(context).textScaleFactor),
       child: TextFormField(
         key: widget.textFieldKey,
         autocorrect: widget.autocorrect,
@@ -594,7 +595,6 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
         expands: widget.expands,
         focusNode: widget.focusNode,
         inputFormatters: widget.inputFormatters,
-        keyboardAppearance: widget.keyboardAppearance,
         keyboardType: widget.keyboardType,
         maxLength: widget.maxLength,
         maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -620,11 +620,13 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
         textDirection: widget.textDirection,
         textInputAction: widget.textInputAction,
         toolbarOptions: widget.toolbarOptions,
+        validator: widget.validator,
       ),
     );
   }
 
-  List _calculateFontSize(BoxConstraints size, TextStyle? style, int? maxLines) {
+  List _calculateFontSize(
+      BoxConstraints size, TextStyle? style, int? maxLines) {
     var span = TextSpan(
       style: widget.textSpan?.style ?? style,
       text: widget.textSpan?.text ?? widget.data,
